@@ -35,17 +35,7 @@ namespace ImgToolkit
 
 	};
 
-	ImageOperate::ImageOperate()
-	{
-		Image img;
-	}
-
-	ImageOperate::~ImageOperate()
-	{
-		if (img.data != NULL) {
-			delete img.data;
-		}
-	}
+	
 
 
 }

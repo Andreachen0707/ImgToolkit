@@ -4,6 +4,18 @@ using namespace std;
 
 namespace ImgToolkit 
 {
+	ImageOperate::ImageOperate()
+	{
+	}
+
+
+	ImageOperate::~ImageOperate()
+	{
+		if (img.data != NULL) {
+			delete img.data;
+		}
+	}
+
 	Image ImageOperate::copyImgDeep(Image input)
 	{
 		Image newImg;
@@ -30,37 +42,20 @@ namespace ImgToolkit
 		img.width = input.cols;
 		img.channels = input.channels();
 
-
 		uchar*** output = new uchar**[input.rows];
-		if (img.channels == 1) 
-		{
+
 			for (int i = 0; i < input.rows; i++)
 			{
+				output[i] = new uchar*[input.cols];
 				for (int j = 0; j < input.cols; j++)
 				{
-					output[i][j][0] = input.at<uchar>(i, j);
+					output[i][j] = new uchar[input.channels()];
+					for (int k = 0; k < input.channels(); k++)
+					{
+						output[i][j][k] = uchar(input.at<cv::Vec3b>(i, j)[k]);
+					}
 				}
 			}
-		}
-		else 
-		{
-			for (int i = 0; i < input.rows; i++)
-			{
-				for (int j = 0; j < input.cols; j++)
-				{
-					int b = input.at<cv::Vec3b>(i, j)[0];
-					int g = input.at<cv::Vec3b>(i, j)[1];
-					int r = input.at<cv::Vec3b>(i, j)[2];
-
-
-					output[i][j][0] = b;
-					output[i][j][1] = g;
-					output[i][j][2] = r;
-				}
-			}
-			
-
-		}
 		
 		img.data = output;
 
@@ -88,7 +83,7 @@ namespace ImgToolkit
 		{
 			for (int j = 0; j < img.width; j++)
 			{
-				int pos = input[i][j] % 256;
+				int pos = input[i][j] % 255;
 				hist[pos]++;
 			}
 		}
