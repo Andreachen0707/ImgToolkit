@@ -2,11 +2,12 @@
 #ifndef IMG_OPERATE_H
 #define IMG_OPERATE_H
 
-#include "core/matrix.h"
 #include <stdio.h>
 #include <uchar.h>
 #include <vector>
-#include <opencv2\opencv.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
 
 namespace ImgToolkit
 {
@@ -15,7 +16,7 @@ namespace ImgToolkit
 		int height;
 		int width;
 		int channels;
-		int*** data;
+		uchar*** data;
 	};
 	class ImageOperate
 	{
@@ -24,13 +25,13 @@ namespace ImgToolkit
 		ImageOperate();
 		~ImageOperate();
 		
-		int*** readImage(cv::Mat input);
+		uchar*** readImage(cv::Mat& input);
 		Image copyImgDeep(Image input);
 
-		int** convertImage(int*** input);
-		vector<int> computeHist(int** input);
+		std::vector<int> computHist(uchar** input);
+		uchar** convertImage(uchar*** input);
 
-	private:
+	//private:
 
 	};
 

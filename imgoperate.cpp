@@ -11,7 +11,7 @@ namespace ImgToolkit
 		newImg.width = input.width;
 		newImg.channels = input.channels;
 
-		int*** data = new int**[newImg.height];
+		uchar*** data = new uchar**[newImg.height];
 		for (int i = 0; i < img.height; i++)
 		{
 			for (int j = 0; j < img.width; j++)
@@ -24,13 +24,14 @@ namespace ImgToolkit
 		return newImg;
 
 	}
-	int*** ImageOperate::readImage(cv::Mat input)
+	uchar*** ImageOperate::readImage(cv::Mat& input)
 	{
 		img.height = input.rows;
 		img.width = input.cols;
-		img.channels = input.channels;
+		img.channels = input.channels();
 
-		int*** output = new int**[input.rows];
+
+		uchar*** output = new uchar**[input.rows];
 		if (img.channels == 1) 
 		{
 			for (int i = 0; i < input.rows; i++)
@@ -47,9 +48,9 @@ namespace ImgToolkit
 			{
 				for (int j = 0; j < input.cols; j++)
 				{
-					int b = input.at<Vec3b>(i, j)[0];
-					int g = input.at<Vec3d>(i, j)[1];
-					int r = input.at<Vec3d>(i, j)[2];
+					int b = input.at<cv::Vec3b>(i, j)[0];
+					int g = input.at<cv::Vec3b>(i, j)[1];
+					int r = input.at<cv::Vec3b>(i, j)[2];
 
 
 					output[i][j][0] = b;
@@ -67,9 +68,9 @@ namespace ImgToolkit
 
 	}
 
-	int** ImageOperate::convertImage(int*** input)
+	uchar** ImageOperate::convertImage(uchar*** input)
 	{
-		int** output = new int*[img.height];
+		uchar** output = new uchar*[img.height];
 		for (int i = 0; i < img.height; i++)
 		{
 			for (int j = 0; j < img.width; j++)
@@ -80,7 +81,7 @@ namespace ImgToolkit
 		return output;
 	}
 
-	vector<int> ImageOperate::computeHist(int** input)
+	std::vector<int> ImageOperate::computHist(uchar** input)
 	{
 		vector<int> hist(256);
 		for (int i = 0; i < img.height; i++)
